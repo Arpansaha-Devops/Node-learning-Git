@@ -18,7 +18,10 @@ console.log("Hello, Node.js!");
 //     sub : subtract
 // } // Exporting the add function so that it can be used in other files
 
+exports.add = (a, b = 7) => {
+  console.log(a + b);
+};
 
-exports.add = (a,b = 7) => {
-    console.log(a + b)
-}
+exports.sub = (a, b) => {
+  console.log(a - b);
+};
