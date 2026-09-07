@@ -16,6 +16,9 @@ console.log("1");
 
 // console.log("2");
 
+
+
+
 // Reading a file using readFileSync (synchronous) and readFile (asynchronous) methods -----
 
 //   const result = fs.readFileSync("./contact.txt","utf-8" ,)

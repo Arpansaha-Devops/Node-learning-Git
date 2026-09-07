@@ -1,0 +1,23 @@
+{
+  "name": "http-server",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Arpansaha-Devops/Node-learning-Git#readme",
+  "bugs": {
+    "url": "https://github.com/Arpansaha-Devops/Node-learning-Git/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arpansaha-Devops/Node-learning-Git.git"
+  },
+  "license": "ISC",
+  "author": "Arpan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1"
+  }
+}
