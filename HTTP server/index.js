@@ -1,9 +1,40 @@
 const http = require("http") ; 
 const fs = require("fs") ;
 const url = require("url") ;
+const express = require("express") ; 
 
 
-const myServer = http.createServer((req,res) => {
+
+const app = express() ; 
+
+app.get("/", (req,res) => {
+    res.send("<h1>Welcome to Home Page</h1>");
+}) ; 
+
+
+app.get("/about", (req,res) => {
+    res.send("<h1>Welcome to About Page</h1>");
+}
+) ;
+
+app.get("/search", (req,res) => {
+    const searchUrl = req.query.search_query;
+    res.send(`<h1>Welcome to Search Page</h1><p>You searched for: ${searchUrl}</p>`);
+}) ;
+
+app.get("/contact", (req,res) => {
+    const userName = req.query.name;
+    res.send(`<h1>Welcome to Contact Page</h1><p>Hello, ${userName}!</p>`);
+}) ;
+
+app.use((req,res) => {
+    res.status(404).send("<h1>404 Page Not Found</h1>");
+}) ;
+
+
+
+
+function handleRequest(req,res)  {
    if(req.url === "/favicon.ico") return res.writeHead(204); // To avoid favicon.ico error in console log .
    const log = `${Date.now()} : New Request Made : ${req.url} : ${req.method}\n`;
    const myUrl = url.parse(req.url,true);
@@ -35,7 +66,10 @@ const myServer = http.createServer((req,res) => {
      }
   });
 
-})
+}
 
-myServer.listen(8000, () => console.log("Server Created Sucessfully !"));
+
+const MyServer = http.createServer(app);
+
+MyServer.listen(8000, () => console.log("Server Created Sucessfully !"));
 
