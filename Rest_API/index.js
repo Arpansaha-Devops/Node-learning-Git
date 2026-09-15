@@ -31,3 +31,13 @@ app.get("/api/users", (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`); // logging a message when the server starts
 });
+
+app.get("/api/users/:id", (req, res) => {
+    const userId = parseInt(req.params.id); 
+    const user = users.find(u => u.id === userId); // finding the user with the given id
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" }); // sending a 404 response if user is not found
+    } 
+    return res.json(user); // sending the found user as JSON response  
+});
