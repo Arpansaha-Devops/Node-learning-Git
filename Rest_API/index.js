@@ -28,16 +28,52 @@ app.get("/api/users", (req, res) => {
 });
 
 
+
+app.get("/users", (req, res) => {
+    const html = `<h1>Users</h1><ul>${users.map(user => `<li>${user.first_name} ${user.last_name}</li>`).join('')}</ul>`;
+    res.send(html); // sending the HTML response with the list of users
+})
+
+
+// app.get("/api/users/:id", (req, res) => {
+//     const userId = parseInt(req.params.id); 
+//     const user = users.find(u => u.id === userId); // finding the user with the given id
+
+//     if (!user) {
+//         return res.status(404).json({ message: "User not found" }); // sending a 404 response if user is not found
+//     } 
+//     return res.json(user); // sending the found user as JSON response  
+// });
+
+
+
+
+
+// Chained Route Handlers for /api/users/:id --------
+
+
+app.route("/api/users/:id")  // app.route() is used to create a chainable route handler for a specific path. In this case, it is used for the path "/api/users/:id", where ":id" is a route parameter that can be accessed using req.params.id. This allows us to define multiple HTTP methods (GET, PUT, DELETE) for the same route in a more organized way.
+    .get((req, res) => {
+        const userId = parseInt(req.params.id);
+        const user = users.find(u => u.id === userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }   
+        res.json(user);  
+    })
+    .put((req, res) => {
+        const userId = parseInt(req.params.id);
+        const userIndex = users.findIndex(u => u.id === userId);
+    })
+    .delete((req, res) => {
+        const userId = parseInt(req.params.id);
+        const userIndex = users.filter(u => u.id !== userId);
+    });
+
+
+
+
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`); // logging a message when the server starts
-});
-
-app.get("/api/users/:id", (req, res) => {
-    const userId = parseInt(req.params.id); 
-    const user = users.find(u => u.id === userId); // finding the user with the given id
-
-    if (!user) {
-        return res.status(404).json({ message: "User not found" }); // sending a 404 response if user is not found
-    } 
-    return res.json(user); // sending the found user as JSON response  
 });
