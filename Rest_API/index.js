@@ -5,6 +5,11 @@ const app = express();  // it creates an instance of express application
 const port = 8080; // port number on which the server will listen
 const users = require("./MOCK_DATA.json"); // importing the JSON data from the file
 
+
+
+app.use(express.urlencoded({ extended: false })); // middleware to parse URL-encoded data
+app.use(express.json()); // middleware to parse JSON data
+
 app.use((req, res, next) => {
     const log = `${new Date().toISOString()} | ${req.ip} | ${req.method} | ${req.originalUrl} | ${req.get("user-agent") || "unknown"}\n`;
 
@@ -61,9 +66,23 @@ app.route("/api/users/:id")  // app.route() is used to create a chainable route 
         }   
         res.json(user);  
     })
-    .put((req, res) => {
+    .patch((req, res) => {
         const userId = parseInt(req.params.id);
         const userIndex = users.findIndex(u => u.id === userId);
+
+        if (userIndex === -1) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        users[userIndex] = { ...users[userIndex], ...req.body, id: userId };
+
+        fs.writeFile(path.join(__dirname, "MOCK_DATA.json"), JSON.stringify(users, null, 2), (err) => {
+            if (err) {
+                return res.status(500).json({ message: "Error writing to file" });
+            }
+
+            return res.json(users[userIndex]);
+        });
     })
     .delete((req, res) => {
         const userId = parseInt(req.params.id);
@@ -73,6 +92,22 @@ app.route("/api/users/:id")  // app.route() is used to create a chainable route 
 
 
 
+
+    app.post("/api/users", (req, res) => {
+
+       const body = req.body; // getting the request body ; 
+      users.push({...body, id: users.length + 1}); // adding the new user to the users array with a new id
+       fs.writeFile("MOCK_DATA.json", JSON.stringify(users, null, 2), (err , data ) => {
+        if(err){
+            res.status(500).json({ message: "Error writing to file" });
+        } 
+            res.status(201).json({ message: "User added successfully" });
+         })
+         })
+
+
+
+         
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`); // logging a message when the server starts
