@@ -39,3 +39,5 @@
 2026-09-17T09:48:51.214Z | ::1 | PATCH | /api/users/500 | PostmanRuntime/2.6.0
 2026-09-17T09:51:36.190Z | ::1 | PATCH | /api/users/500 | PostmanRuntime/2.6.0
 2026-09-17T09:51:45.495Z | ::1 | GET | /api/users | PostmanRuntime/2.6.0
+2026-09-21T11:03:13.467Z | ::1 | DELETE | /api/users/500 | PostmanRuntime/2.6.0
+2026-09-21T11:18:45.290Z | ::1 | POST | /api/users/500?id=500&first_name=Arpan&last_name=Saha&email=arpansaha0707@gmail.com&gender%20=Male&Job_role=Senior%20Fullstack%20Developer | PostmanRuntime/2.6.0
