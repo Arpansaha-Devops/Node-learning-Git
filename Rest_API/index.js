@@ -86,7 +86,21 @@ app.route("/api/users/:id")  // app.route() is used to create a chainable route 
     })
     .delete((req, res) => {
         const userId = parseInt(req.params.id);
-        const userIndex = users.filter(u => u.id !== userId);
+        const userIndex = users.findIndex(u => u.id === userId);
+
+        if (userIndex === -1) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        users.splice(userIndex, 1);
+
+        fs.writeFile(path.join(__dirname, "MOCK_DATA.json"), JSON.stringify(users, null, 2), (err) => {
+            if (err) {
+                return res.status(500).json({ message: "Error writing to file" });
+            }
+
+            return res.json({ message: "User deleted successfully" });
+        });
     });
 
 
