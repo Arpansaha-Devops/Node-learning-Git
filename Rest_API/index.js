@@ -120,6 +120,19 @@ app.route("/api/users/:id")  // app.route() is used to create a chainable route 
          })
 
 
+         app.post("/api/users/:id", (req, res) => {
+            const userId = parseInt(req.params.id);
+            const body = req.body ;
+            users.push({...body, id: userId}); // adding the new user to the users array with the specified id
+            fs.writeFile("MOCK_DATA.json", JSON.stringify(users, null, 2), (err , data ) => {
+                if(err){    
+                    res.status(500).json({ message: "Error writing to file" });
+                }
+                return res.status(201).json({ message: "User added successfully" });
+            })
+        }
+    );
+
 
          
 
