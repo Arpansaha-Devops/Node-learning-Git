@@ -15,13 +15,24 @@ app.use((req, res, next) => {
       console.error('Error writing to log file:', err);
     }
 });
+
+const userName = "John Doe"; // example user name to be added to the request object
+req.userName = userName; // adding the user name to the request object for use in subsequent middleware or route handlers
    next(); // calling next() to pass control to the next middleware function.
 // if next() is not called, the request will be left hanging and the client will not receive a response.
 });
 
+app.use((req, res, next) => {
+  console.log('User Name:', req.userName);
+    next(); // calling next() to pass control to the next middleware function.
+}
+)
+
 // app.get('/', (req, res) => {
 //   res.send('Hello, World!');
 // });z
+
+
 
 
 app.get('/api/users', (req, res) => {
