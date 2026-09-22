@@ -4,6 +4,7 @@ const PORT = 3000; // defining the port number on which the server will listen
 const users = require('./MOCK_DATA.json'); // importing the JSON data from the file
 const fs = require('fs'); // importing the file system module to read and write files
 
+app.use(express.urlencoded({ extended: false })); // middleware to parse URL-encoded data
 app.use(express.json()); // middleware to parse incoming JSON requests
 
 // Middleware function to log request details
@@ -41,6 +42,18 @@ app.get('/api/users', (req, res) => {
   }
   res.json(users);
 });
+
+app.post('/api/users', (req, res) => {
+  const newUser = req.body;
+  users.push({...newUser, id: users.length + 1 }); // adding a new user to the users array with a unique ID
+  fs.writeFile('MOCK_DATA.json', JSON.stringify(users, null, 2), (err) => { // writing the updated users array back to the JSON file
+    if (err) {
+      console.error('Error writing to file:', err);
+      res.status(500).json({ message: 'Internal server error' }); // sending a 500 response if there is an error writing to the file
+    }
+    res.status(201).json({ message: `User created successfully : ${newUser.name}` }); // sending a 201 response with the newly created user
+  })
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
